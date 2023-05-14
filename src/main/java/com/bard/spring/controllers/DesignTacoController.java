@@ -6,13 +6,15 @@ import com.bard.spring.domain.Type;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
+
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -20,8 +22,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/design")
 public class DesignTacoController {
 
-    @GetMapping
-    public String showDesignForm(Model model) {
+    @ModelAttribute("ingredients")
+    public List<Ingredient> loadIngredients(Map<String, Object> model) {
         List<Ingredient> ingredients = Arrays.asList(
                 new Ingredient("FLTO", "wheat", Type.WRAP),
                 new Ingredient("COTO", "corn", Type.WRAP),
@@ -35,11 +37,8 @@ public class DesignTacoController {
                 new Ingredient("SRCR", "cream", Type.SAUCE)
         );
         Arrays.stream(Type.values())
-                .forEach(type -> model.addAttribute(type.name().toLowerCase(), filterByType(ingredients, type)));
-
-        model.addAttribute("design", new Taco());
-        return "design";
-
+                .forEach(type -> model.put(type.name().toLowerCase(), filterByType(ingredients, type)));
+        return ingredients;
     }
 
     private List<Ingredient> filterByType(List<Ingredient> ingredients, Type type) {
@@ -48,9 +47,24 @@ public class DesignTacoController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping
+    public String showDesignForm(Model model) {
+
+        model.addAttribute("design", new Taco());
+        return "design";
+
+    }
+
+
+
     @PostMapping
-    public String processDesign(@ModelAttribute Taco design) {
+    public String processDesign(@Valid @ModelAttribute("design") Taco design, Errors errors, Model model) {
+        if (errors.hasErrors()) {
+            return "design";
+        }
         log.info("Processing taco: " + design);
         return "redirect:/orders/current";
     }
+
+
 }

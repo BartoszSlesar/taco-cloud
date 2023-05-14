@@ -3,7 +3,12 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Taco Cloud</title>
-    <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <link href="https://fonts.googleapis.com/css?family=Raleway|Rock+Salt|Source+Code+Pro:300,400,600" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+    <script type="text/javascript" src="/webjars/jquery/3.6.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/5.2.3/js/bootstrap.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/imask/3.4.0/imask.min.js'></script>
+    <script type="text/javascript" th:src="@{/js/card.js}"></script>
 </head>
 <body>
 <form method="POST" th:action="@{/orders}" th:object="${order}">
@@ -11,48 +16,53 @@
     <img th:src="@{/images/TacoCloud.png}"/>
     <a th:href="@{/design}" id="another">Design another Taco</a><br/>
 
-<!--    <div th:id="${fields.hasErrors()}">-->
-<!--        <span class="validationError">-->
-<!--            Remove presented problems and try once again-->
-<!--        </span>-->
-<!--    </div>-->
+<!--        <div th:id="${fields.hasErrors()}">-->
+<!--            <span class="validationError">-->
+<!--                Remove presented problems and try once again-->
+<!--            </span>-->
+<!--        </div>-->
 
     <h3>Delivery Address...</h3>
     <label for="name">Your name and second name: </label>
     <input id="name" type="text" th:field="*{name}"/>
+    <span class="validationError" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> </span>
     <br/>
 
 
     <label for="street">Street: </label>
     <input id="street" type="text" th:field="*{street}"/>
+    <span class="validationError" th:if="${#fields.hasErrors('street')}" th:errors="*{street}"> </span>
     <br/>
 
     <label for="city">City: </label>
     <input id="city" type="text" th:field="*{city}"/>
+    <span class="validationError" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"> </span>
     <br/>
 
     <label for="state">State: </label>
     <input id="state" type="text" th:field="*{state}"/>
+    <span class="validationError" th:if="${#fields.hasErrors('state')}" th:errors="*{state}"> </span>
     <br/>
 
     <label for="zip">Zip Code: </label>
     <input id="zip" type="text" th:field="*{zip}"/>
+    <span class="validationError" th:if="${#fields.hasErrors('zip')}" th:errors="*{zip}"> </span>
     <br/>
-
 
 
     <h3>Payment Method</h3>
-    <label for="ccNumber">Credit Card Number: </label>
-    <input id="ccNumber" type="text" th:field="*{creditCard.ccNumber}"/>
-    <br/>
+    <div th:replace="~{fragments/card :: card ('creditCard.cardHolder', 'creditCard.ccNumber', 'creditCard.ccExpiration', creditCard.ccCVV)}"></div>
+    <!--    <label for="ccNumber">Credit Card Number: </label>-->
+    <!--    <input id="ccNumber" type="text" th:field="*{creditCard.ccNumber}"/>-->
+    <!--    <br/>-->
 
-    <label for="ccExpiration">Expiration Date: </label>
-    <input id="ccExpiration" type="text" th:field="*{creditCard.ccExpiration}"/>
-    <br/>
+    <!--    <label for="ccExpiration">Expiration Date: </label>-->
+    <!--    <input id="ccExpiration" type="date" th:field="*{creditCard.ccExpiration}"/>-->
+    <!--    <br/>-->
 
-    <label for="ccCVV">Code CVV: </label>
-    <input id="ccCVV" type="text" th:field="*{creditCard.ccCVV}"/>
-    <br/>
+    <!--    <label for="ccCVV">Code CVV: </label>-->
+    <!--    <input id="ccCVV" type="text" th:field="*{creditCard.ccCVV}"/>-->
+    <!--    <br/>-->
 
     <input type="submit" value="Place your order"/>
 </form>
