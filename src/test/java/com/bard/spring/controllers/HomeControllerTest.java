@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(HomeController.class)
 class HomeControllerTest {
 
     @Autowired

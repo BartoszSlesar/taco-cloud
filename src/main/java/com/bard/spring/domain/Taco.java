@@ -9,16 +9,19 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Taco {
+    private Long id;
+    private LocalDateTime createdAt;
     @NotNull
-    @Size(min=5, message = "Name must contain at least five characters")
+    @Size(min = 5, message = "Name must contain at least five characters")
     private String name;
 
     @NotEmpty(message = "You need to select at least one ingredient")
-    private List<String> ingredients;
+    private List<Ingredient> ingredients;
 }

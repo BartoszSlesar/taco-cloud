@@ -16,10 +16,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreditCard {
+    private Long id;
     @NotBlank(message = "Please type name of the card holder")
     @Size(max = 25, message = "Your name is too long")
     private String cardHolder;
-    @CreditCardNumber(message = "Credit Card Number is incorrect, please check and try again")
+//    @CreditCardNumber(message = "Credit Card Number is incorrect, please check and try again")
     private String ccNumber;
 
 //    @Pattern(regexp = "^(0[1-9]|1[0-2])(/)([1-9][0-9])$", message = "Value should be in MM/YY format")
