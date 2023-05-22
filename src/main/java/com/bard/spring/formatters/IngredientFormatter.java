@@ -22,7 +22,7 @@ public class IngredientFormatter implements Formatter<Ingredient> {
     @Override
     public Ingredient parse(String text, Locale locale) throws ParseException {
 
-        return ingredientRepository.findById(text);
+        return ingredientRepository.findById(text).orElseThrow(() -> new RuntimeException("Ingredient not Found"));
     }
 
     @Override
