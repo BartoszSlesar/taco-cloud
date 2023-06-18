@@ -3,8 +3,10 @@ package com.bard.spring.controllers;
 
 import com.bard.spring.domain.CreditCard;
 import com.bard.spring.domain.Order;
+import com.bard.spring.domain.User;
 import com.bard.spring.repositories.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -51,10 +53,11 @@ public class OrderController {
     }
 
     @PostMapping
-    public String processOrder(@Validated @ModelAttribute Order order, Errors errors, SessionStatus sessionStatus) {
+    public String processOrder(@Validated @ModelAttribute Order order, Errors errors, SessionStatus sessionStatus, @AuthenticationPrincipal User user) {
         if (errors.hasErrors()) {
             return "orderForm";
         }
+        order.setUser(user);
         orderRepository.save(order);
         sessionStatus.setComplete();
         log.info("Order was placed " + order);

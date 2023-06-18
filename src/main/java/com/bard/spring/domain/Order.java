@@ -47,6 +47,9 @@ public class Order extends BaseEntity implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "taco_id"))
     private List<Taco> tacos = new ArrayList<>();
 
+    @ManyToOne
+    private User user;
+
     public void addDesign(Taco taco) {
         if (taco != null) {
             this.tacos.add(taco);
