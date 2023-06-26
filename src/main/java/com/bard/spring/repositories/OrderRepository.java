@@ -2,6 +2,8 @@ package com.bard.spring.repositories;
 
 import com.bard.spring.domain.Ingredient;
 import com.bard.spring.domain.Order;
+import com.bard.spring.domain.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -17,6 +19,8 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     List<Order> findByDeliveryToAndCityAllIgnoreCase(String deliveryTo, String deliveryCity);
 
     List<Order> findByCityOrderByDeliveryTo(String city);
+
+    List<Order> findByUserOrderByPlacedAtDesc(User user, Pageable pageable);
 
     @Query("SELECT o FROM Order o WHERE o.city='Katowice'")
     List<Order> readOrdersDeliveredInKatowice();

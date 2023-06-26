@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+    platform: h2
+  jpa:
+    defer-datasource-initialization: true
+    show-sql: true
+server:
+  port: 8443
+  ssl:
+    key-store: /home/bard/projects/files/mykeys.jks
+    key-store-password: letmein
+    key-password: letmein
+logging:
+  path: /home/bard/projects/logs/
+  file: TacoCloud.log
+  level:
+    root: WARN
+    org:
+      springframework:
+        security: DEBUG
+greeting:
+  welcome: Your are using ${spring.application.name}.
+
+taco:
+  orders:
+    pageSize: 20
+
+
+

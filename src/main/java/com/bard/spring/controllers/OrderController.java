@@ -1,11 +1,16 @@
 package com.bard.spring.controllers;
 
 
+import com.bard.spring.config.OrderProps;
 import com.bard.spring.domain.CreditCard;
 import com.bard.spring.domain.Order;
 import com.bard.spring.domain.User;
 import com.bard.spring.repositories.OrderRepository;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,9 +31,12 @@ import java.time.format.DateTimeFormatter;
 @RequestMapping("/orders")
 @SessionAttributes("order")
 public class OrderController {
-    private OrderRepository orderRepository;
 
-    public OrderController(OrderRepository orderRepository) {
+    private final OrderProps orderProps;
+    private final OrderRepository orderRepository;
+
+    public OrderController(OrderProps orderProps, OrderRepository orderRepository) {
+        this.orderProps = orderProps;
         this.orderRepository = orderRepository;
     }
 
@@ -62,5 +70,13 @@ public class OrderController {
         sessionStatus.setComplete();
         log.info("Order was placed " + order);
         return "redirect:/";
+    }
+
+
+    @GetMapping
+    public String ordersForUser(@AuthenticationPrincipal User user, Model model) {
+        Pageable pageable = PageRequest.of(0, orderProps.getPageSize());
+        model.addAttribute("orders", orderRepository.findByUserOrderByPlacedAtDesc(user, pageable));
+        return "orderList";
     }
 }
