@@ -2,13 +2,10 @@ package com.bard.spring.controllers;
 
 
 import com.bard.spring.config.OrderProps;
-import com.bard.spring.domain.CreditCard;
 import com.bard.spring.domain.Order;
 import com.bard.spring.domain.User;
-import com.bard.spring.repositories.OrderRepository;
-import lombok.Setter;
+import com.bard.spring.repositories.crud.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
-import javax.validation.Valid;
 import java.beans.PropertyEditorSupport;
 import java.time.LocalDate;
 import java.time.YearMonth;

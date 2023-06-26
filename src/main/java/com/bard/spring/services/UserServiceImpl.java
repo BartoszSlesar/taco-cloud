@@ -1,7 +1,7 @@
 package com.bard.spring.services;
 
 import com.bard.spring.domain.User;
-import com.bard.spring.repositories.UserRepository;
+import com.bard.spring.repositories.crud.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

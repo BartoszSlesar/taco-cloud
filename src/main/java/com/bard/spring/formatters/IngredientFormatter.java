@@ -1,8 +1,7 @@
 package com.bard.spring.formatters;
 
 import com.bard.spring.domain.Ingredient;
-import com.bard.spring.domain.Type;
-import com.bard.spring.repositories.IngredientRepository;
+import com.bard.spring.repositories.crud.IngredientRepository;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Component;
 

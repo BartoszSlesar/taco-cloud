@@ -1,16 +1,15 @@
 package com.bard.spring.repositories;
 
-import com.bard.spring.domain.Ingredient;
 import com.bard.spring.domain.Order;
 import com.bard.spring.domain.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface OrderRepository extends CrudRepository<Order, Long> {
+public interface OrderRepository extends PagingAndSortingRepository<Order, Long> {
 
     List<Order> findByZip(String deliveryZip);
 

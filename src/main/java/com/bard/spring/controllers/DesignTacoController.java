@@ -4,34 +4,38 @@ import com.bard.spring.domain.Ingredient;
 import com.bard.spring.domain.Order;
 import com.bard.spring.domain.Taco;
 import com.bard.spring.domain.Type;
-import com.bard.spring.repositories.IngredientRepository;
+import com.bard.spring.repositories.crud.IngredientRepository;
 import com.bard.spring.repositories.TacoRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.server.EntityLinks;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Controller
-@RequestMapping("/design")
-@SessionAttributes("order")
+@RestController
+@RequestMapping(path = "/design", produces = "application/json")
+@CrossOrigin(origins = "*")
 public class DesignTacoController {
 
     private final IngredientRepository ingredientRepository;
     private final TacoRepository tacoRepository;
 
-    public DesignTacoController(IngredientRepository ingredientRepository, TacoRepository tacoRepository) {
+    private final EntityLinks entityLinks;
+
+    public DesignTacoController(IngredientRepository ingredientRepository, TacoRepository tacoRepository, EntityLinks entityLinks) {
         this.ingredientRepository = ingredientRepository;
         this.tacoRepository = tacoRepository;
+        this.entityLinks = entityLinks;
     }
 
     @ModelAttribute(name = "order")
@@ -42,6 +46,21 @@ public class DesignTacoController {
     @ModelAttribute(name = "taco")
     public Taco taco() {
         return new Taco();
+    }
+
+    @GetMapping("/recent")
+    public Iterable<Taco> recentTacos() {
+        PageRequest pageRequest = PageRequest.of(0, 12, Sort.by("createdAt").descending());
+        return tacoRepository.findAll(pageRequest).getContent();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Taco> tacoById(@PathVariable("id") Long id) {
+        Optional<Taco> tacoById = tacoRepository.findById(id);
+        return tacoById
+                .map(taco -> new ResponseEntity<>(taco, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
+
     }
 
     @ModelAttribute("ingredients")
